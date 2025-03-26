@@ -117,7 +117,12 @@ public class CalculatorSample implements ActionListener {
                     answers /= operand;
                 }
             }
-            tf.setText(String.valueOf(answers));
+            if (answers % 1 == 0) {
+                tf.setText(String.valueOf((int) answers));
+            }
+            else {
+                tf.setText(String.valueOf(answers));
+            }
             operate = "";
         }
 
