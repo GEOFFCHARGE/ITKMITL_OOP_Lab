@@ -68,12 +68,17 @@ public class CalculatorSample implements ActionListener {
     public void actionPerformed(ActionEvent ev) {
 
         String action = ev.getActionCommand();
-        if (action.equals("0") || action.equals("1") || action.equals("2") || action.equals("3") || action.equals("4") || action.equals("5") || action.equals("6") || action.equals("7") || action.equals("8") || action.equals("9")) {
-            tf.setText(tf.getText() + action);
-        }
-        else if (action.equals("+") || action.equals("-") || action.equals("x") || action.equals("/")) {
-            if (operate.isEmpty()) {
+        if (action.equals("+") || action.equals("-") || action.equals("x") || action.equals("/")) {
+            if ((tf.getText().equals("") && operate.isEmpty()) && answers == 0) {
+                return;
+            }
+            if ((tf.getText().equals("") && !operate.isEmpty())) {
+                operate = action;
+            }
+            else if (operate.isEmpty()) {
                 answers = Double.parseDouble(tf.getText());
+                tf.setText("");
+                operate = action;
             }
             else {
                 double operand = Double.parseDouble(tf.getText());
@@ -89,9 +94,9 @@ public class CalculatorSample implements ActionListener {
                 else if (operate.equals("/")) {
                     answers /= operand;
                 }
+                tf.setText("");
+                operate = action;
             }
-            tf.setText("");
-            operate = action;
         }
         else if (action.equals("c")) {
             tf.setText("");
@@ -99,6 +104,9 @@ public class CalculatorSample implements ActionListener {
             operate = "";
         }
         else if (action.equals("=")) {
+            if (tf.getText().equals("")) {
+                return;
+            }
             if (operate.isEmpty()) {
                 answers = Double.parseDouble(tf.getText());
             }
@@ -123,7 +131,11 @@ public class CalculatorSample implements ActionListener {
             else {
                 tf.setText(String.valueOf(answers));
             }
+            answers = 0;
             operate = "";
+        }
+        else {
+            tf.setText(tf.getText() + action);
         }
 
     }
